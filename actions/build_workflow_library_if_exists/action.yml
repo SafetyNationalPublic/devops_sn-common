@@ -42,7 +42,7 @@ runs:
       with:
         BRANCH: ${{ inputs.BRANCH }}
         PROJECTPATH: "${{ inputs.PROJECT }}"
-        PROJECTFILENAME: "${{ github.event.inputs.PROJECT }}"
+        PROJECTFILENAME: "${{ inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
 
     - name: "Build ${{ inputs.PROJECT }} NetFx"
@@ -51,7 +51,7 @@ runs:
       with:
         BRANCH: ${{ inputs.BRANCH }}
         PROJECTPATH: "${{ inputs.PROJECT }}\\netfx"
-        PROJECTFILENAME: "${{ github.event.inputs.PROJECT }}"
+        PROJECTFILENAME: "${{ inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
 
     - name: "Build ${{ inputs.PROJECT }} NetCore"
@@ -60,5 +60,5 @@ runs:
       with:
         BRANCH: ${{ inputs.BRANCH }}
         PROJECTPATH: "${{ inputs.PROJECT }}\\netcore"
-        PROJECTFILENAME: "${{ github.event.inputs.PROJECT }}"
+        PROJECTFILENAME: "${{ inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
