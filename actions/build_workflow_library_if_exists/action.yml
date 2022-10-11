@@ -38,27 +38,27 @@ runs:
 
     - name: "Build ${{ inputs.PROJECT }} NetStandard"
       if: steps.check_for_standard.outputs.files_exists == 'true'
-      uses: ./.github/actions/build_workflow_library
+      uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main
       with:
         BRANCH: ${{ inputs.BRANCH }}
-        PROJECTPATH: "${{ inputs.BRANCH }}"
-        PROJECTFILENAME: "${{ github.event.inputs.BRANCH }}"
+        PROJECTPATH: "${{ inputs.PROJECT }}"
+        PROJECTFILENAME: "${{ github.event.inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
 
     - name: "Build ${{ inputs.PROJECT }} NetFx"
       if: steps.check_for_netfx.outputs.files_exists == 'true'
-      uses: ./.github/actions/build_workflow_library
+      uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main
       with:
         BRANCH: ${{ inputs.BRANCH }}
-        PROJECTPATH: "${{ inputs.BRANCH }}\\netfx"
-        PROJECTFILENAME: "${{ github.event.inputs.BRANCH }}"
+        PROJECTPATH: "${{ inputs.PROJECT }}\\netfx"
+        PROJECTFILENAME: "${{ github.event.inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
 
     - name: "Build ${{ inputs.PROJECT }} NetCore"
       if: steps.check_for_netcore.outputs.files_exists == 'true'
-      uses: ./.github/actions/build_workflow_library
+      uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main
       with:
         BRANCH: ${{ inputs.BRANCH }}
-        PROJECTPATH: "${{ inputs.BRANCH }}\\netcore"
-        PROJECTFILENAME: "${{ github.event.inputs.BRANCH }}"
+        PROJECTPATH: "${{ inputs.PROJECT }}\\netcore"
+        PROJECTFILENAME: "${{ github.event.inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
