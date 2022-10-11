@@ -1,0 +1,50 @@
+name: "Build Libraries"
+inputs:
+  BRANCH:
+    description: 'Branch to build'
+    default: 'master'
+    required: true
+    type: string
+  NUGET_API_KEY:
+    required: true
+  PROJECTPATH:
+    required: true
+    type: string
+  PROJECTFILENAME:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Support longpaths
+      shell: cmd
+      run: git config --system core.longpaths true
+
+    - name: Scan for file
+      env:
+        BRANCH: ${{ github.event.inputs.BRANCH }}
+        PROJECTPATH: ${{ inputs.PROJECTPATH }}
+        PROJECTFILENAME: ${{ inputs.PROJECTFILENAME }}
+      shell: cmd
+      run: dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.csproj
+
+    - name: Restore Project
+      shell: cmd
+      run: dotnet restore  ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj
+
+    - name: Build Project
+      shell: cmd
+      run: dotnet build --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-restore
+
+    - name: Pack Project
+      shell: cmd
+      run: |
+          echo "################################`r`n scanning directory ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\ for ${{ inputs.PROJECTFILENAME }}\*.*.nupkg `r`n################################"
+          for /f "delims=" %%c in ('dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}\${{ inputs.PROJECTFILENAME }}*.*.nupkg') do (
+            echo "################################`r`n nuget push on package:%%c `r`n################################"
+            dotnet nuget push %%c --source https://nuget.pkg.github.com/SafetyNationalOrg/index.json --api-key ${{ inputs.NUGET_API_KEY }} --skip-duplicate
+            rem echo "******************************** Error Level: %ERRORLEVEL% ********************************"
+          )
+          REM Clear file not found error if not package is found
+          cmd /c "exit /b 0"

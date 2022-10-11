@@ -1,0 +1,64 @@
+name: "Build Libraries"
+inputs:
+  BRANCH:
+    description: 'Branch to build'
+    default: 'master'
+    required: true
+    type: string
+  NUGET_API_KEY:
+    required: true
+  PROJECT:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Support longpaths
+      shell: cmd
+      run: git config --system core.longpaths true
+
+    - name: Check for standard
+      id: check_for_standard
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "${{ github.workspace }}\\${{ input.PROJECT }}\\${{ input.PROJECT }}.csproj"
+
+    - name: Check for netfx
+      id: check_for_netfx
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "${{ github.workspace }}\\${{ input.PROJECT }}\\netfx\\${{ input.PROJECT }}.csproj"
+
+    - name: Check for netcore
+      id: check_for_netcore
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "${{ github.workspace }}\\${{ input.PROJECT }}\\netcore\\${{ input.PROJECT }}.csproj"
+
+    - name: "Build ${{ input.PROJECT }} NetStandard"
+      if: steps.check_for_standard.outputs.files_exists == 'true'
+      uses: ./.github/actions/build_workflow_library
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        PROJECTPATH: "${{ inputs.BRANCH }}"
+        PROJECTFILENAME: "${{ github.event.inputs.BRANCH }}"
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
+
+    - name: "Build ${{ input.PROJECT }} NetFx"
+      if: steps.check_for_netfx.outputs.files_exists == 'true'
+      uses: ./.github/actions/build_workflow_library
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        PROJECTPATH: "${{ inputs.BRANCH }}\\netfx"
+        PROJECTFILENAME: "${{ github.event.inputs.BRANCH }}"
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
+
+    - name: "Build ${{ input.PROJECT }} NetCore"
+      if: steps.check_for_netcore.outputs.files_exists == 'true'
+      uses: ./.github/actions/build_workflow_library
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        PROJECTPATH: "${{ inputs.BRANCH }}\\netcore"
+        PROJECTFILENAME: "${{ github.event.inputs.BRANCH }}"
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
