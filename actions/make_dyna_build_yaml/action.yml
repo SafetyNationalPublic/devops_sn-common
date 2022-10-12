@@ -62,6 +62,8 @@ runs:
                 )
             )
         )
+        echo Current Directory:
+        cd
         echo Build File Located at:  %action%
         type .github\actions\dynamic_build\action.yaml
 
