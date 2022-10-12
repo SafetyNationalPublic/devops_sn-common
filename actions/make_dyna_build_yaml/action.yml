@@ -21,47 +21,48 @@ runs:
     - name: Make Dynamic Build Yaml Script
       shell: cmd
       run: |
-        echo name: Build - {${{ inputs.SOLUTIONNAME }}  > ${{ inputs.BUILDFILE }}
-        echo on:>>  ${{ inputs.BUILDFILE }}
-        echo   workflow_dispatch:>>  ${{ inputs.BUILDFILE }}
-        echo     inputs:>>  ${{ inputs.BUILDFILE }}
-        echo       BRANCH:>>  ${{ inputs.BUILDFILE }}
-        echo         description: 'Branch to build'>>  ${{ inputs.BUILDFILE }}
-        echo         default: 'master'>>  ${{ inputs.BUILDFILE }}
-        echo         required: true>>  ${{ inputs.BUILDFILE }}
-        echo defaults:>>  ${{ inputs.BUILDFILE }}
-        echo   run:>>  ${{ inputs.BUILDFILE }}
-        echo     shell: cmd>>  ${{ inputs.BUILDFILE }}
-        echo jobs:>>  ${{ inputs.BUILDFILE }}
-        echo   Build_Libraries:>>  ${{ inputs.BUILDFILE }}
-        echo     name: "Build Libraries">>  ${{ inputs.BUILDFILE }}
-        echo     runs-on: SNGithubRunner>>  ${{ inputs.BUILDFILE }}
-        echo     steps:>>  ${{ inputs.BUILDFILE }}
-        echo       - name: "Call Checkout">>  ${{ inputs.BUILDFILE }}
-        echo         uses: actions/checkout@v3>>  ${{ inputs.BUILDFILE }}
-        echo         with:>>  ${{ inputs.BUILDFILE }}
-        echo           ref: ${{ inputs.BRANCH }}>>  ${{ inputs.BUILDFILE }}
+        mkdir ${{ inputs.BUILDFILE }}
+        echo name: Build - {${{ inputs.SOLUTIONNAME }}  > ${{ inputs.BUILDFILE }}\action.yaml
+        echo on:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo   workflow_dispatch:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo     inputs:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo       BRANCH:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         description: 'Branch to build'>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         default: 'master'>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         required: true>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo defaults:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo   run:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo     shell: cmd>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo jobs:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo   Build_Libraries:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo     name: "Build Libraries">>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo     runs-on: SNGithubRunner>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo     steps:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo       - name: "Call Checkout">>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         uses: actions/checkout@v3>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         with:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           ref: ${{ inputs.BRANCH }}>>  ${{ inputs.BUILDFILE }}\action.yaml
 
         for %%a in ${{ inputs.PROJECTS }} }}) do (
             for /F "tokens=1-2 delims=#" %%B in ("%%a") do (
-        echo       - name: "Build %%B">>  ${{ inputs.BUILDFILE }}
+        echo       - name: "Build %%B">>  ${{ inputs.BUILDFILE }}\action.yaml
                 if NOT "%%B%%C" == "%%C%%B" (
         echo ***************** echo Inserting %%B - %%C echo *****************
-        echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main>>  ${{ inputs.BUILDFILE }}
-        echo         with:>>  ${{ inputs.BUILDFILE }}
-        echo           BRANCH: ${{ inputs.BRANCH }}>>  ${{ inputs.BUILDFILE }}
-        echo           PROJECTPATH: ^"%%B\\%%C^">>  ${{ inputs.BUILDFILE }}
-        echo           PROJECTFILENAME: "%%B">>  ${{ inputs.BUILDFILE }}
-        echo           NUGET_API_KEY: {{ $'{{ secrets.NUGET_API_KEY }}' }}>>  ${{ inputs.BUILDFILE }}
+        echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         with:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           BRANCH: ${{ inputs.BRANCH }}>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           PROJECTPATH: ^"%%B\\%%C^">>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           PROJECTFILENAME: "%%B">>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           NUGET_API_KEY: {{ $'{{ secrets.NUGET_API_KEY }}' }}>>  ${{ inputs.BUILDFILE }}\action.yaml
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
-        echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  ${{ inputs.BUILDFILE }}
-        echo         with:>>  ${{ inputs.BUILDFILE }}
-        echo           BRANCH: ${{ inputs.BRANCH }}>>  ${{ inputs.BUILDFILE }}
-        echo           PROJECT: ^"%%B^">>  ${{ inputs.BUILDFILE }}
-        echo           NUGET_API_KEY: {{ $'{{ secrets.NUGET_API_KEY }}' }}>>  ${{ inputs.BUILDFILE }}
+        echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo         with:>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           BRANCH: ${{ inputs.BRANCH }}>>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           PROJECT: ^"%%B^">>  ${{ inputs.BUILDFILE }}\action.yaml
+        echo           NUGET_API_KEY: {{ $'{{ secrets.NUGET_API_KEY }}' }}>>  ${{ inputs.BUILDFILE }}\action.yaml
                 )
             )
         )
-        echo Build File Located at:  ${{ inputs.BUILDFILE }}
-        type  ${{ inputs.BUILDFILE }}
+        echo Build File Located at:  ${{ inputs.BUILDFILE }}\action.yaml
+        type  ${{ inputs.BUILDFILE }}\action.yaml
