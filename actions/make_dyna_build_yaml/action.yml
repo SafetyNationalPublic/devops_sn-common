@@ -17,7 +17,6 @@ runs:
   using: "composite"
   steps: 
     - name: Make Dynamic Build Yaml Script
-      shell: cmd
       run: |
         SET SolutionName=${{ inputs.SOLUTIONNAME }}
         SET Projects=${{ inputs.PROJECTS }}
@@ -64,6 +63,7 @@ runs:
         )
         echo Build File Located at:  %action%
         type .github\actions\dynamic_build\action.yaml
+      shell: cmd
 
     - name: "Run Dynamic Build"
       uses: .github/actions/dynamic_build/action.yaml
