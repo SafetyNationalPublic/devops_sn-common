@@ -5,16 +5,14 @@ inputs:
     default: 'master'
     required: true
     type: string
-  BUILDFILE:
-    required: true
-    type: string
   SOLUTIONNAME:
     required: true
     type: string
   PROJECTS:
     required: true
     type: string
-
+  NUGET_API_KEY:
+    required: true
 runs:
   using: "composite"
   steps: 
@@ -22,8 +20,14 @@ runs:
       shell: cmd
       run: |
         mkdir .github\actions\dynamic_build
-        SET action=.github/actions/dynamic_build.yaml
+        SET action=.github/actions/dynamic_build/action.yaml
         SET Projects=${{ inputs.PROJECTS }}
+        SET KeyText=${
+        SET KeyText=%KeyText%{
+        SET KeyText=%KeyText% secrets.NUGET_API_KEY
+        SET KeyText=%KeyText% }
+        KeyText=%KeyText%}
+        
         echo name: Build - {${{ inputs.SOLUTIONNAME }}  > %action%
         echo on:>>  %action%
         echo   workflow_dispatch:>>  %action%
@@ -55,14 +59,14 @@ runs:
         echo           BRANCH: ${{ inputs.BRANCH }}>>  %action%
         echo           PROJECTPATH: ^"%%B\\%%C^">>  %action%
         echo           PROJECTFILENAME: "%%B">>  %action%
-        echo           NUGET_API_KEY: {{ $'{{ secrets.NUGET_API_KEY }}' }}>>  %action%
+        echo           NUGET_API_KEY: %KeyText%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
         echo         with:>>  %action%
         echo           BRANCH: ${{ inputs.BRANCH }}>>  %action%
         echo           PROJECT: ^"%%B^">>  %action%
-        echo           NUGET_API_KEY: {{ $'{{ secrets.NUGET_API_KEY }}' }}>>  %action%
+        echo           NUGET_API_KEY: %KeyText%>>  %action%
                 )
             )
         )
