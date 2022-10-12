@@ -28,45 +28,37 @@ runs:
         SET KeyText=%KeyText% }
         SET KeyText=%KeyText%}
         
-        echo name: Build - {${{ inputs.SOLUTIONNAME }}  > %action%
-        echo on:>>  %action%
-        echo   workflow_dispatch:>>  %action%
-        echo     inputs:>>  %action%
-        echo       BRANCH:>>  %action%
-        echo         description: 'Branch to build'>>  %action%
-        echo         default: 'master'>>  %action%
-        echo         required: true>>  %action%
-        echo defaults:>>  %action%
-        echo   run:>>  %action%
-        echo     shell: cmd>>  %action%
-        echo jobs:>>  %action%
-        echo   Build_Libraries:>>  %action%
-        echo     name: "Build Libraries">>  %action%
-        echo     runs-on: SNGithubRunner>>  %action%
-        echo     steps:>>  %action%
-        echo       - name: "Call Checkout">>  %action%
-        echo         uses: actions/checkout@v3>>  %action%
-        echo         with:>>  %action%
-        echo           ref: ${{ inputs.BRANCH }}>>  %action%
+        echo name: Build - ${{ inputs.SOLUTIONNAME }}  > %action%
+        echo inputs:>>  %action%
+        echo   BRANCH:>>  %action%
+        echo     description: 'Branch to build'>>  %action%
+        echo     default: 'master'>>  %action%
+        echo     required: true>>  %action%
+        echo     type: string>>  %action%
+        echo   NUGET_API_KEY:>>  %action%
+        echo     required: true>>  %action%
+        echo runs:>>  %action%
+        echo   using: "composite">>  %action%
+        echo   steps:>>  %action%
 
         for %%a in (%Project%) do (
             for /F "tokens=1-2 delims=#" %%B in ("%%a") do (
-        echo       - name: "Build %%B">>  %action%
+        echo     - name: "Build %%B">>  %action%
                 if NOT "%%B%%C" == "%%C%%B" (
         echo ***************** echo Inserting %%B - %%C echo *****************
-        echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main>>  %action%
-        echo         with:>>  %action%
-        echo           BRANCH: ${{ inputs.BRANCH }}>>  %action%
-        echo           PROJECTPATH: ^"%%B\\%%C^">>  %action%
-        echo           PROJECTFILENAME: "%%B">>  %action%
-        echo           NUGET_API_KEY: %KeyText%>>  %action%
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: ${{ inputs.BRANCH }}>>  %action%
+        echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
+        echo         PROJECTFILENAME: "%%B">>  %action%
+        echo         NUGET_API_KEY: %KeyText%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
-        echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
-        echo         with:>>  %action%
-        echo           BRANCH: ${{ inputs.BRANCH }}>>  %action%
-        echo           PROJECT: ^"%%B^">>  %action%
-        echo           NUGET_API_KEY: %KeyText%>>  %action%
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: ${{ inputs.BRANCH }}>>  %action%
+        echo         PROJECT: ^"%%B^">>  %action%
+        echo         NUGET_API_KEY: %KeyText%>>  %action%
                 )
             )
         )
