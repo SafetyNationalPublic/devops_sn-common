@@ -21,8 +21,8 @@ runs:
       run: |
         SET SolutionName=${{ inputs.SOLUTIONNAME }}
         SET Projects=${{ inputs.PROJECTS }}
-        mkdir .github\actions\dynamic_build
-        SET action=.github/actions/dynamic_build/action.yaml
+        mkdir %GITHUB_WORKSPACE%\.github\actions\dynamic_build
+        SET action=%GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
         SET OpenBraces=${
         SET OpenBraces=%OpenBraces%{
         SET CloseBraces=}
@@ -65,7 +65,7 @@ runs:
         echo Current Directory:
         cd
         echo Build File Located at:  %action%
-        type .github\actions\dynamic_build\action.yaml
+        type %GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
 
     - name: "Run Dynamic Build"
       uses: ./.github/actions/dynamic_build/action.yaml
