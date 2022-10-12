@@ -23,6 +23,7 @@ runs:
       run: |
         mkdir .github\actions\${{ inputs.BUILDFILE }}
         SET action=.github/actions/${{ inputs.BUILDFILE }}.yaml
+        SET Projects=${{ inputs.PROJECTS }}
         echo name: Build - {${{ inputs.SOLUTIONNAME }}  > %action%
         echo on:>>  %action%
         echo   workflow_dispatch:>>  %action%
@@ -44,7 +45,7 @@ runs:
         echo         with:>>  %action%
         echo           ref: ${{ inputs.BRANCH }}>>  %action%
 
-        for %%a in ${{ inputs.PROJECTS }} }}) do (
+        for %%a in (%Project%) do (
             for /F "tokens=1-2 delims=#" %%B in ("%%a") do (
         echo       - name: "Build %%B">>  %action%
                 if NOT "%%B%%C" == "%%C%%B" (
