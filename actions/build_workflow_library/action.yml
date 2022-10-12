@@ -41,7 +41,7 @@ runs:
       shell: cmd
       run: |
           echo "################################`r`n scanning directory ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\ for ${{ inputs.PROJECTFILENAME }}\*.*.nupkg `r`n################################"
-          for /f "delims=" %%c in ('dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}\${{ inputs.PROJECTFILENAME }}*.*.nupkg') do (
+          for /f "delims=" %%c in ('dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.*.nupkg') do (
             echo "################################`r`n nuget push on package:%%c `r`n################################"
             dotnet nuget push %%c --source https://nuget.pkg.github.com/SafetyNationalOrg/index.json --api-key ${{ inputs.NUGET_API_KEY }} --skip-duplicate
             rem echo "******************************** Error Level: %ERRORLEVEL% ********************************"
