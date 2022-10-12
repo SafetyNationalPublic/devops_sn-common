@@ -51,14 +51,14 @@ runs:
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
         echo         PROJECTFILENAME: "%%B">>  %action%
-        echo         NUGET_API_KEY: %OpenBraces% secrets.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%
-        echo         NUGET_API_KEY: %OpenBraces% secrets.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
                 )
             )
         )
