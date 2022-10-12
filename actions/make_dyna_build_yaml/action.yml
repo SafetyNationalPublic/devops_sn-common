@@ -68,7 +68,7 @@ runs:
         type %GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
 
     - name: "Run Dynamic Build"
-      uses: ./.github/actions/dynamic_build/action.yaml
+      uses: ./.github/actions/dynamic_build
       with:
         BRANCH: ${{ inputs.BRANCH }}
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
