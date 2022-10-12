@@ -21,8 +21,8 @@ runs:
     - name: Make Dynamic Build Yaml Script
       shell: cmd
       run: |
-        mkdir .github\actions\${{ inputs.BUILDFILE }}
-        SET action=.github/actions/${{ inputs.BUILDFILE }}.yaml
+        mkdir .github\actions\dynamic_build
+        SET action=.github/actions/dynamic_build.yaml
         SET Projects=${{ inputs.PROJECTS }}
         echo name: Build - {${{ inputs.SOLUTIONNAME }}  > %action%
         echo on:>>  %action%
@@ -67,4 +67,4 @@ runs:
             )
         )
         echo Build File Located at:  %action%
-        type  %action%
+        type .github\actions\dynamic_build\action.yaml
