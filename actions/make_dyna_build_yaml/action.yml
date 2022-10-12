@@ -52,14 +52,14 @@ runs:
         echo           BRANCH: ${{ github.event.inputs.BRANCH }}>> {{ '{{ inputs.BUILDFILE }}' }}
         echo           PROJECTPATH: ^"%%B\\%%C^">> {{ '{{ inputs.BUILDFILE }}' }}
         echo           PROJECTFILENAME: "%%B">> {{ '{{ inputs.BUILDFILE }}' }}
-        echo           NUGET_API_KEY: {{ "${{ secrets.NUGET_API_KEY }}' }}>> {{ '{{ inputs.BUILDFILE }}' }}
+        echo           NUGET_API_KEY: {{ '${{ secrets.NUGET_API_KEY }}' }}>> {{ '{{ inputs.BUILDFILE }}' }}
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo         uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>> {{ '{{ inputs.BUILDFILE }}' }}
         echo         with:>> {{ '{{ inputs.BUILDFILE }}' }}
         echo           BRANCH: ${{ github.event.inputs.BRANCH }}>> {{ '{{ inputs.BUILDFILE }}' }}
         echo           PROJECT: ^"%%B^">> {{ '{{ inputs.BUILDFILE }}' }}
-        echo           NUGET_API_KEY: {{ "${{ secrets.NUGET_API_KEY }}' }}>> {{ '{{ inputs.BUILDFILE }}' }}
+        echo           NUGET_API_KEY: {{ '${{ secrets.NUGET_API_KEY }}' }}>> {{ '{{ inputs.BUILDFILE }}' }}
                 )
             )
         )
