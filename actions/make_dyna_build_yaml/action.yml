@@ -64,4 +64,4 @@ runs:
             )
         )
         echo Build File Located at:  ${{ inputs.BUILDFILE }}
-        more  ${{ inputs.BUILDFILE }}
+        type  ${{ inputs.BUILDFILE }}
