@@ -101,10 +101,3 @@ jobs:
           cd
           echo Build File Located at:  %action%
           type %GITHUB_WORKSPACE%\.github\workflows\dynamic_build.yaml
-    
-  call-workflow-1-in-local-repo:
-    uses: ./.github/workflows/dynamic_build.yaml
-    with:
-      BRANCH: ${{ inputs.BRANCH }}
-      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-
