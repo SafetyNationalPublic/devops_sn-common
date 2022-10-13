@@ -21,17 +21,17 @@ runs:
       shell: cmd
       run: git config --system core.longpaths true
 
-    - name: Title and start group
+    - name: Title
+      run: echo "# Building ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
+
+    - name: Open Group
+      run: echo "::group::{ 'Building ${{ inputs.PROJECTFILENAME }}' }"
+
+    - name: Scan for file
       env:
         BRANCH: ${{ github.event.inputs.BRANCH }}
         PROJECTPATH: ${{ inputs.PROJECTPATH }}
         PROJECTFILENAME: ${{ inputs.PROJECTFILENAME }}
-      shell: cmd
-      run: |
-          echo "# Building ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
-          echo "::group::{ 'Building ${{ inputs.PROJECTFILENAME }}' }"
-
-    - name: Scan for file
       shell: cmd
       run: dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.csproj
 
