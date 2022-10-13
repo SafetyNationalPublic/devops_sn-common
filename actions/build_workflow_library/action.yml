@@ -22,9 +22,11 @@ runs:
       run: git config --system core.longpaths true
 
     - name: Title
+      shell: cmd
       run: echo "# Building ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
 
     - name: Open Group
+      shell: cmd
       run: echo "::group::{ 'Building ${{ inputs.PROJECTFILENAME }}' }"
 
     - name: Scan for file
