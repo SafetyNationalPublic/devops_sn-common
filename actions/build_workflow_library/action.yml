@@ -21,11 +21,17 @@ runs:
       shell: cmd
       run: git config --system core.longpaths true
 
-    - name: Scan for file
+    - name: Title and start group
       env:
         BRANCH: ${{ github.event.inputs.BRANCH }}
         PROJECTPATH: ${{ inputs.PROJECTPATH }}
         PROJECTFILENAME: ${{ inputs.PROJECTFILENAME }}
+      shell: cmd
+      run: |
+          echo "# Building ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "::group::{ 'Building ${{ inputs.PROJECTFILENAME }}' }"
+
+    - name: Scan for file
       shell: cmd
       run: dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.csproj
 
@@ -48,3 +54,8 @@ runs:
           )
           REM Clear file not found error if not package is found
           cmd /c "exit /b 0"
+
+    - name: Close group
+      shell: cmd
+      run: echo "::endgroup::"
+
