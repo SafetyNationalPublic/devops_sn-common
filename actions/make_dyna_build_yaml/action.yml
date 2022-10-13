@@ -8,9 +8,12 @@ inputs:
   SOLUTIONNAME:
     required: true
     type: string
-  PROJECTS:
-    required: true
+  LIBRARYPROJECTS:
     type: string
+    default: ''
+  WEBPROJECTS:
+    type: string
+    default: ''
   NUGET_API_KEY:
     required: true
 runs:
@@ -20,7 +23,6 @@ runs:
       shell: cmd
       run: |
         SET SolutionName=${{ inputs.SOLUTIONNAME }}
-        SET Projects=${{ inputs.PROJECTS }}
         mkdir %GITHUB_WORKSPACE%\.github\actions\dynamic_build
         SET action=%GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
         SET OpenBraces=${
@@ -41,6 +43,7 @@ runs:
         echo   using: "composite">>  %action%
         echo   steps:>>  %action%
 
+        SET Projects=${{ inputs.LIBRARYPROJECTS }}
         for %%a in (%Projects%) do (
             for /F "tokens=1-2 delims=#" %%B in ("%%a") do (
         echo     - name: "Build %%B">>  %action%
@@ -55,6 +58,29 @@ runs:
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECT: ^"%%B^">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+                )
+            )
+        )
+
+        SET Projects=${{ inputs.WEBPROJECTS }}
+        for %%a in (%Projects%) do (
+            for /F "tokens=1-2 delims=#" %%B in ("%%a") do (
+        echo     - name: "Build %%B">>  %action%
+                if NOT "%%B%%C" == "%%C%%B" (
+        echo ***************** echo Inserting %%B - %%C echo *****************
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
+        echo         PROJECTFILENAME: "%%B">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+                ) else (
+        echo ***************** echo Inserting %%B only echo *****************
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%
