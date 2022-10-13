@@ -23,7 +23,7 @@ runs:
 
     - name: Title
       shell: cmd
-      run: echo "# Building ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
+      run: echo "### Building ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
 
     - name: Open Group
       shell: cmd
