@@ -37,7 +37,7 @@ runs:
 
     - name: Build Project
       shell: cmd
-      run: dotnet build --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-restore
+      run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
 
     - name: Create ZIP
       uses: thedoctor0/zip-release@main
