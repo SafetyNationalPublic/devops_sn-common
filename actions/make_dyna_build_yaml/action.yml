@@ -19,6 +19,8 @@ inputs:
     default: ''
   NUGET_API_KEY:
     required: true
+  GITHUB_TOKEN:
+    required: true
 runs:
   using: "composite"
   steps: 
@@ -42,6 +44,8 @@ runs:
         echo     type: string>>  %action%
         echo   NUGET_API_KEY:>>  %action%
         echo     required: true>>  %action%
+        echo   GITHUB_TOKEN:>>  %action%
+        echo     required: true>>  %action%
         echo runs:>>  %action%
         echo   using: "composite">>  %action%
         echo   steps:>>  %action%
@@ -58,6 +62,7 @@ runs:
         echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
         echo         PROJECTFILENAME: "%%B">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
@@ -65,6 +70,7 @@ runs:
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
                 )
             )
         )
@@ -81,6 +87,7 @@ runs:
         echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
         echo         PROJECTFILENAME: "%%B">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
@@ -88,13 +95,10 @@ runs:
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
                 )
             )
         )
-        echo Current Directory:
-        cd
-        echo Build File Located at:  %action%
-        type %GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
 
         SET Projects=${{ inputs.FUNCTIONPROJECTS }}
         for %%a in (%Projects%) do (
@@ -108,6 +112,7 @@ runs:
         echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
         echo         PROJECTFILENAME: "%%B">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
@@ -115,6 +120,7 @@ runs:
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
                 )
             )
         )
@@ -128,4 +134,5 @@ runs:
       with:
         BRANCH: ${{ inputs.BRANCH }}
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
 
