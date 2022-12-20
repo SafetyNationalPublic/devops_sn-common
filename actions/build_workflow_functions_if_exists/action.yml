@@ -1,0 +1,64 @@
+name: "Build Webs"
+inputs:
+  BRANCH:
+    description: 'Branch to build'
+    default: 'master'
+    required: true
+    type: string
+  NUGET_API_KEY:
+    required: true
+  PROJECT:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Support longpaths
+      shell: cmd
+      run: git config --system core.longpaths true
+
+    - name: Check for standard
+      id: check_for_standard
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "${{ github.workspace }}\\${{ inputs.PROJECT }}\\${{ inputs.PROJECT }}.csproj"
+
+    - name: Check for netfx
+      id: check_for_netfx
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "${{ github.workspace }}\\${{ inputs.PROJECT }}\\netfx\\${{ inputs.PROJECT }}.csproj"
+
+    - name: Check for netcore
+      id: check_for_netcore
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "${{ github.workspace }}\\${{ inputs.PROJECT }}\\netcore\\${{ inputs.PROJECT }}.csproj"
+
+    - name: "Build ${{ inputs.PROJECT }} NetStandard"
+      if: steps.check_for_standard.outputs.files_exists == 'true'
+      uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions@main
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        PROJECTPATH: "${{ inputs.PROJECT }}"
+        PROJECTFILENAME: "${{ inputs.PROJECT }}"
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
+
+    - name: "Build ${{ inputs.PROJECT }} NetFx"
+      if: steps.check_for_netfx.outputs.files_exists == 'true'
+      uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions@main
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        PROJECTPATH: "${{ inputs.PROJECT }}\\netfx"
+        PROJECTFILENAME: "${{ inputs.PROJECT }}"
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
+
+    - name: "Build ${{ inputs.PROJECT }} NetCore"
+      if: steps.check_for_netcore.outputs.files_exists == 'true'
+      uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions@main
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        PROJECTPATH: "${{ inputs.PROJECT }}\\netcore"
+        PROJECTFILENAME: "${{ inputs.PROJECT }}"
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}

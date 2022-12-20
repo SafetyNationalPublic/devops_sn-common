@@ -14,6 +14,9 @@ inputs:
   WEBPROJECTS:
     type: string
     default: ''
+  FUNCTIONPROJECTS:
+    type: string
+    default: ''
   NUGET_API_KEY:
     required: true
 runs:
@@ -81,6 +84,33 @@ runs:
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECT: ^"%%B^">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+                )
+            )
+        )
+        echo Current Directory:
+        cd
+        echo Build File Located at:  %action%
+        type %GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
+
+        SET Projects=${{ inputs.FUNCTIONPROJECTS }}
+        for %%a in (%Projects%) do (
+            for /F "tokens=1-2 delims=#" %%B in ("%%a") do (
+        echo     - name: "Build %%B">>  %action%
+                if NOT "%%B%%C" == "%%C%%B" (
+        echo ***************** echo Inserting %%B - %%C echo *****************
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
+        echo         PROJECTFILENAME: "%%B">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+                ) else (
+        echo ***************** echo Inserting %%B only echo *****************
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%

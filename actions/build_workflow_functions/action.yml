@@ -1,0 +1,55 @@
+name: "Build Web"
+inputs:
+  BRANCH:
+    description: 'Branch to build'
+    default: 'master'
+    required: true
+    type: string
+  NUGET_API_KEY:
+    required: true
+  PROJECTPATH:
+    required: true
+    type: string
+  PROJECTFILENAME:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Support longpaths
+      shell: cmd
+      run: git config --system core.longpaths true
+
+    - name: Scan for file
+      env:
+        BRANCH: ${{ github.event.inputs.BRANCH }}
+        PROJECTPATH: ${{ inputs.PROJECTPATH }}
+        PROJECTFILENAME: ${{ inputs.PROJECTFILENAME }}
+      shell: cmd
+      run: dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.csproj
+
+    - name: Restore Project
+      shell: cmd
+      run: dotnet restore  ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj
+
+    - name: Build Project
+      shell: cmd
+      run: dotnet build --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-restore
+
+    - name: Create ZIP
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: '..\..\..\..\..\release-${{ github.event.release.name }}.zip'
+        directory: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\bin\debug\net6.0\publish
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ github.workspace }}
+        asset_name: release-${{ github.event.release.name }}.zip
+        asset_content_type: application/zip
