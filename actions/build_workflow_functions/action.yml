@@ -43,7 +43,7 @@ runs:
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
-        filename: '..\..\..\..\..\${{ inputs.PROJECTPATH }}-${{ github.run_number }}.zip'
+        filename: '..\..\..\..\..\${{ inputs.PROJECTPATH }}.zip'
         directory: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\bin\debug\net6.0\publish
 
     - name: Create Release
@@ -52,8 +52,8 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.run_number }}
-        release_name: ${{ inputs.PROJECTPATH }}-${{ github.run_number }}
+        tag_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}-${{ github.run_number }}
+        release_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
@@ -63,6 +63,6 @@ runs:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}-${{ github.run_number }}.zip
-        asset_name: ${{ inputs.PROJECTPATH }}-${{ github.run_number }}.zip
+        asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}.zip
+        asset_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}.zip
         asset_content_type: application/zip
