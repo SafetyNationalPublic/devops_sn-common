@@ -37,7 +37,9 @@ runs:
 
     - name: Build Project
       shell: cmd
-      run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
+      run: |
+        dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
+        echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
 
     - name: Create ZIP
       uses: thedoctor0/zip-release@main
@@ -52,7 +54,7 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}-${{ github.run_number }}
+        tag_name: ${{ inputs.PROJECTPATH }}-${{ env.DOTNET_BUILD_VERSION }}
         release_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}
         draft: false
         prerelease: false
@@ -64,5 +66,5 @@ runs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}.zip
-        asset_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}.zip
+        asset_name: ${{ inputs.PROJECTPATH }}-${{ env.DOTNET_BUILD_VERSION }}.zip
         asset_content_type: application/zip
