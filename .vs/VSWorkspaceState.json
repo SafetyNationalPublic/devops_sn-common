@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\.github\\workflows",
+    "\\actions",
+    "\\actions\\build_workflow_functions",
+    "\\actions\\build_workflow_functions_if_exists",
+    "\\actions\\build_workflow_library",
+    "\\actions\\build_workflow_library_if_exists",
+    "\\actions\\build_workflow_web",
+    "\\actions\\build_workflow_web_if_exists",
+    "\\actions\\make_dyna_build_yaml"
+  ],
+  "SelectedNode": "\\actions\\build_workflow_library\\action.yml",
+  "PreviewInSolutionExplorer": false
+}

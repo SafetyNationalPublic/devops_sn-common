@@ -7,6 +7,10 @@ inputs:
     type: string
   NUGET_API_KEY:
     required: true
+  GITHUB_TOKEN:
+    required: true
+  GITHUB_BUILD_RELEASE:
+    required: true
   PROJECTPATH:
     required: true
     type: string

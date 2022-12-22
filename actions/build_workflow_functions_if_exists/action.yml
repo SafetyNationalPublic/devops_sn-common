@@ -9,6 +9,8 @@ inputs:
     required: true
   GITHUB_TOKEN:
     required: true
+  GITHUB_BUILD_RELEASE:
+    required: true
   PROJECT:
     required: true
     type: string
@@ -47,6 +49,7 @@ runs:
         PROJECTFILENAME: "${{ inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
 
     - name: "Build ${{ inputs.PROJECT }} NetFx"
       if: steps.check_for_netfx.outputs.files_exists == 'true'
@@ -57,6 +60,7 @@ runs:
         PROJECTFILENAME: "${{ inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
 
     - name: "Build ${{ inputs.PROJECT }} NetCore"
       if: steps.check_for_netcore.outputs.files_exists == 'true'
@@ -67,3 +71,4 @@ runs:
         PROJECTFILENAME: "${{ inputs.PROJECT }}"
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}

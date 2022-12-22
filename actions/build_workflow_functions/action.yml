@@ -9,6 +9,8 @@ inputs:
     required: true
   GITHUB_TOKEN:
     required: true
+  GITHUB_BUILD_RELEASE:
+    required: true
   PROJECTPATH:
     required: true
     type: string
@@ -36,6 +38,8 @@ runs:
       run: dotnet restore  ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj
 
     - name: Build Project
+      env:
+        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       run: |
         dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true

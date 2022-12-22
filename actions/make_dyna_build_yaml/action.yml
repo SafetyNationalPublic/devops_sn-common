@@ -21,6 +21,13 @@ inputs:
     required: true
   GITHUB_TOKEN:
     required: true
+  GITHUB_BUILD_RELEASE:
+    type: choice
+    description: Select true to build release packages; false for pre-release packages.
+    options:
+    - true
+    - false
+    
 runs:
   using: "composite"
   steps: 
@@ -46,6 +53,8 @@ runs:
         echo     required: true>>  %action%
         echo   GITHUB_TOKEN:>>  %action%
         echo     required: true>>  %action%
+        echo   GITHUB_BUILD_RELEASE:>>  %action%
+        echo     required: true>>  %action%
         echo runs:>>  %action%
         echo   using: "composite">>  %action%
         echo   steps:>>  %action%
@@ -63,6 +72,7 @@ runs:
         echo         PROJECTFILENAME: "%%B">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
@@ -71,6 +81,7 @@ runs:
         echo         PROJECT: ^"%%B^">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 )
             )
         )
@@ -88,6 +99,7 @@ runs:
         echo         PROJECTFILENAME: "%%B">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
@@ -96,6 +108,7 @@ runs:
         echo         PROJECT: ^"%%B^">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 )
             )
         )
@@ -113,6 +126,7 @@ runs:
         echo         PROJECTFILENAME: "%%B">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
@@ -121,6 +135,7 @@ runs:
         echo         PROJECT: ^"%%B^">>  %action%
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 )
             )
         )
@@ -135,4 +150,5 @@ runs:
         BRANCH: ${{ inputs.BRANCH }}
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
 
