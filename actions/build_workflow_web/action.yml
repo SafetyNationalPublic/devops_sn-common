@@ -44,10 +44,14 @@ runs:
       run: dotnet restore  ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj
 
     - name: Build Project
+      env:
+        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       run: dotnet build --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-restore
 
     - name: Pack Project
+      env:
+        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       run: dotnet pack --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-build
 
