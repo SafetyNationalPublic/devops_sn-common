@@ -22,11 +22,7 @@ inputs:
   GITHUB_TOKEN:
     required: true
   GITHUB_BUILD_RELEASE:
-    type: choice
-    description: Select true to build release packages; false for pre-release packages.
-    options:
-    - true
-    - false
+    required: true
     
 runs:
   using: "composite"
