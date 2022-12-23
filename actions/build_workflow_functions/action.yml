@@ -48,6 +48,15 @@ runs:
         echo "test_var=testvalue" >> $GITHUB_ENV
         echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
 
+    - name: Check Build Version Environment Variable
+      env:
+        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
+      shell: cmd
+      run: |
+        echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
+        echo "BuildVersion is %BuildVersion%"
+        echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
+
     - name: Create ZIP
       uses: thedoctor0/zip-release@main
       with:
