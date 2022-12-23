@@ -45,7 +45,7 @@ runs:
 
     - name: Set variables
       id: dotenv
-      uses: ./.github/actions/dotenv-action
+      uses: falti/dotenv-action@v1.0.2
       with:
         path: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\.env
         log-variables: true
