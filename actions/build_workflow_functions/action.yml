@@ -41,33 +41,14 @@ runs:
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
+      run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
+
+    - name: Set variables
       run: |
-        echo on
-        dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
-        echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
-        echo "BuildVersion is %BuildVersion%"
-        echo "----==== Run buildenvvars.bat ====----"
-        echo "${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat"
-        type ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
-        ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
-        echo "Updated BuildVersion is %BuildVersion%"
+        VER=$(cat ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\VERSION)
+        echo "DOTNET_BUILD_VERSION=$VER" >> $GITHUB_ENV
 
-    - name: Check Build Version Environment Variable 1
-      env:
-        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
-      shell: cmd
-      run: |
-        echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
-        echo "BuildVersion is %BuildVersion%"
-        echo "BuildVersion in action is ${{ env.DOTNET_BUILD_VERSION }}
-
-    - name: Run buildenvvars
-      env:
-        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
-      shell: cmd
-      run: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
-
-    - name: Check Build Version Environment Variable 2
+    - name: Check Build Version Environment Variable
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
