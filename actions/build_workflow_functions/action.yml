@@ -42,6 +42,7 @@ runs:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       run: |
+        echo on
         dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
         echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
