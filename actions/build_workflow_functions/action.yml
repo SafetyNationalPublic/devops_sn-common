@@ -43,6 +43,7 @@ runs:
       shell: cmd
       run: |
         dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
+        echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
         echo "test_var=testvalue" >> $GITHUB_ENV
         echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
