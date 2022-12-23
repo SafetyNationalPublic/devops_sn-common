@@ -49,17 +49,13 @@ runs:
         echo "----==== Run buildenvvars.bat ====----"
         echo echo on > ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
         type ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
-        echo echo "test_var=testvalue" ^>^> $GITHUB_ENV >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
-        echo echo ^"DOTNET_BUILD_VERSION=^%BuildVersion^%^" ^>^> $GITHUB_ENV >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
-        echo echo ^"Updated BuildVersion is ^%BuildVersion^%^" >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
         echo echo ^"test_var=testvalue^" ^>^> $GITHUB_ENV >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
         echo echo ^"DOTNET_BUILD_VERSION=^%BuildVersion^%^" ^>^> $GITHUB_ENV >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
+        echo echo ^"Updated BuildVersion is ^%BuildVersion^%^" >> ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
         echo "${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat"
         type ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
-        ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat &
+        ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\newbuildenvvars.bat
         echo "Updated BuildVersion is %BuildVersion%"
-        echo "test_var=testvalue" >> $GITHUB_ENV
-        echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
 
     - name: Run buildenvvars
       env:
