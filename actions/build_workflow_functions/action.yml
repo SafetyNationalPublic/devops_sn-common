@@ -45,6 +45,9 @@ runs:
         dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
         echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
+        echo "----==== Run buildenvvars.bat ====----"
+        ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
+        echo "BuildVersion is %BuildVersion%"
         echo "test_var=testvalue" >> $GITHUB_ENV
         echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
 
@@ -55,7 +58,7 @@ runs:
       run: |
         echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
-        echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
+        echo "BuildVersion in action is ${{ env.DOTNET_BUILD_VERSION }}
 
     - name: Create ZIP
       uses: thedoctor0/zip-release@main
