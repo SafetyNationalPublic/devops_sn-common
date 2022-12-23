@@ -52,13 +52,22 @@ runs:
         ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
         echo "Updated BuildVersion is %BuildVersion%"
 
+    - name: Check Build Version Environment Variable 1
+      env:
+        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
+      shell: cmd
+      run: |
+        echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
+        echo "BuildVersion is %BuildVersion%"
+        echo "BuildVersion in action is ${{ env.DOTNET_BUILD_VERSION }}
+
     - name: Run buildenvvars
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       run: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
 
-    - name: Check Build Version Environment Variable
+    - name: Check Build Version Environment Variable 2
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
