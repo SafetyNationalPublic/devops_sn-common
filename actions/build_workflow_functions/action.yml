@@ -44,11 +44,11 @@ runs:
       run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
 
     - name: Set variables
-      shell: cmd
-      run: |
-        VER=$(cat ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\VERSION)
-        echo "DOTNET_BUILD_VERSION=$VER" >> $GITHUB_ENV
-        echo Ver is $VER
+      id: dotenv
+      uses: ./.github/actions/dotenv-action
+      with:
+        path: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\.env
+        log-variables: true
 
     - name: Check Build Version Environment Variable
       env:
@@ -57,7 +57,7 @@ runs:
       run: |
         echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
-        echo "BuildVersion in action is ${{ env.DOTNET_BUILD_VERSION }}
+        echo "BuildVersion in action is ${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}
 
     - name: Create ZIP
       uses: thedoctor0/zip-release@main
@@ -72,7 +72,7 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ inputs.PROJECTPATH }}-${{ env.DOTNET_BUILD_VERSION }}
+        tag_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}
         release_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}
         draft: false
         prerelease: false
@@ -84,5 +84,5 @@ runs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}.zip
-        asset_name: ${{ inputs.PROJECTPATH }}-${{ env.DOTNET_BUILD_VERSION }}.zip
+        asset_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}.zip
         asset_content_type: application/zip
