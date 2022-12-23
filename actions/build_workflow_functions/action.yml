@@ -46,8 +46,9 @@ runs:
         echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
         echo "----==== Run buildenvvars.bat ====----"
+        echo "${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat"
         ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\buildenvvars.bat
-        echo "BuildVersion is %BuildVersion%"
+        echo "Updated BuildVersion is %BuildVersion%"
         echo "test_var=testvalue" >> $GITHUB_ENV
         echo "DOTNET_BUILD_VERSION=%BuildVersion%" >> $GITHUB_ENV
 
