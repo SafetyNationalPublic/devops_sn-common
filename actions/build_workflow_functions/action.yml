@@ -44,9 +44,11 @@ runs:
       run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
 
     - name: Set variables
+      shell: cmd
       run: |
         VER=$(cat ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\VERSION)
         echo "DOTNET_BUILD_VERSION=$VER" >> $GITHUB_ENV
+        echo Ver is $VER
 
     - name: Check Build Version Environment Variable
       env:
