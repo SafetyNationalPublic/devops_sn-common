@@ -73,7 +73,7 @@ runs:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
         tag_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}
-        release_name: ${{ inputs.PROJECTPATH }}-${{ github.event.inputs.BRANCH }}
+        release_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BASE_BUILD_VERSION }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
