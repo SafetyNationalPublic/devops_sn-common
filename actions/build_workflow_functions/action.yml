@@ -82,6 +82,7 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
+        token: ${{ inputs.NUGET_API_KEY }}
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}.zip
         asset_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BASE_BUILD_VERSION }}.zip
