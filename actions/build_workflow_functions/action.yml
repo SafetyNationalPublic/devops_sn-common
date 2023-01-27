@@ -72,6 +72,7 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
+        token: ${{ inputs.NUGET_API_KEY }}
         tag_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}
         release_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BASE_BUILD_VERSION }}
         draft: false
