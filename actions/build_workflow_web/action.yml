@@ -92,7 +92,7 @@ runs:
       with:
         type: 'zip'
         filename: '..\..\..\..\..\${{ inputs.PROJECTPATH }}.zip'
-        directory: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\bin\debug\net6.0\publish
+        directory: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\bin\publish
 
     - name: Create Release
       id: create_release
