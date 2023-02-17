@@ -87,13 +87,6 @@ runs:
         echo "BuildVersion is %BuildVersion%"
         echo "BuildVersion in action is ${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}
 
-    - name: Create ZIP
-      uses: thedoctor0/zip-release@main
-      with:
-        type: 'zip'
-        filename: '..\..\..\..\..\${{ inputs.PROJECTPATH }}.zip'
-        directory: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\bin\publish
-
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -111,6 +104,6 @@ runs:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}.zip
-        asset_name: ${{ inputs.PROJECTPATH }}-${{ steps.dotenv.outputs.DOTNET_BASE_BUILD_VERSION }}.zip
+        asset_path: ${{ github.workspace }}/${{ inputs.PROJECTPATH }}/bin/${{ steps.dotenv.outputs.PACKAGE_FILE_NAME }}.zip
+        asset_name: ${{ steps.dotenv.outputs.PACKAGE_FILE_NAME }}.zip
         asset_content_type: application/zip
