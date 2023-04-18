@@ -47,7 +47,7 @@ runs:
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
-      run: dotnet build --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-restore /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true /p:CommitHash=$GITHUB_SHA
+      run: dotnet build --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-restore /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true /p:CommitHash=${GITHUB_SHA}
 
     - name: Pack Project
       env:
