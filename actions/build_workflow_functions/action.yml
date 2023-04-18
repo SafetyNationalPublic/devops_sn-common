@@ -41,7 +41,7 @@ runs:
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
-      run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true /p:CommitHash=$GITHUB_SHA
+      run: dotnet build ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj /p:DeployOnBuild=true /p:DeployTarget=Package;CreatePackageOnPublish=true
 
     - name: Set variables
       id: dotenv
