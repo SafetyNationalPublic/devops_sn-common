@@ -54,11 +54,16 @@ runs:
     - name: Pack Project
       shell: cmd
       run: |
-          echo "################################`r`n scanning directory ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\ for ${{ inputs.PROJECTFILENAME }}\*.*.nupkg `r`n################################"
+          echo ################################&echo  scanning directory ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\ for ${{ inputs.PROJECTFILENAME }}\*.*.nupkg &echo ################################
           for /f "delims=" %%c in ('dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.*.nupkg') do (
-            echo "################################`r`n nuget push on package:%%c `r`n################################"
+            echo ################################################################################################
+            echo ################################################################################################
+            echo ################################################################################################
+            echo ################################&echo  nuget push on package:%%c &echo ################################
             dotnet nuget push %%c --source https://nuget.pkg.github.com/SafetyNationalOrg/index.json --api-key ${{ inputs.NUGET_API_KEY }} --skip-duplicate
-            rem echo "******************************** Error Level: %ERRORLEVEL% ********************************"
+            echo ################################################################################################
+            echo ################################################################################################
+            echo ################################################################################################
           )
           REM Clear file not found error if not package is found
           cmd /c "exit /b 0"
