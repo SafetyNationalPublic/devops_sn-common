@@ -113,8 +113,6 @@ runs:
             echo "                                                                                           "
             echo                as ${{ inputs.PROJECTFILENAME }}-${{ steps.dotenv.outputs.DOTNET_BASE_BUILD_VERSION }}
             echo ################################################################################################
-          REM Clear file not found error if not package is found
-          cmd /c "exit /b 0"
 
     - name: Create Release
       id: create_release
@@ -144,6 +142,4 @@ runs:
             echo ################################################################################################
             echo ################################################################################################
             echo ################################################################################################
-          REM Clear file not found error if not package is found
-          cmd /c "exit /b 0"
 
