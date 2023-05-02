@@ -67,7 +67,7 @@ runs:
             echo "                                                                                 "
             echo                on package:%%c
             echo ################################################################################################
-            dotnet nuget push %%c --source https://nuget.pkg.github.com/SafetyNationalOrg/index.json --api-key ${{ inputs.NUGET_API_KEY }} --skip-duplicate
+            dotnet nuget push %%c --source https://nuget.pkg.github.com/SafetyNationalOrg/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
             echo ################################################################################################
             echo ################################################################################################
             echo ################################################################################################
