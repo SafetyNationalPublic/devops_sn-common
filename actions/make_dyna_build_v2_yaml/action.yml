@@ -47,10 +47,17 @@ runs:
         echo   steps:>>  %action%
 
         for /F "tokens=1,2,3 delims==#" %%A in (%GITHUB_WORKSPACE%\.projects_to_build) do (
+        
         echo     - name: "Build %%B">>  %action%
                 if NOT "%%B%%C" == "%%C%%B" (
         echo ***************** echo Inserting %%B - %%C echo *****************
-        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_%%A@main>>  %action%
+                  if "%%A" == "library" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library@main>>  %action%
+                  ) else if "%%A" == "web" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web@main>>  %action%
+                  ) else if "%%A" == "functions" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions@main>>  %action%
+                  )
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
@@ -60,7 +67,13 @@ runs:
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
-        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_%%A_if_exists@main>>  %action%
+                  if "%%A" == "library" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
+                  ) else if "%%A" == "web" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
+                  ) else if "%%A" == "functions" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
+                  )
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
         echo         PROJECT: ^"%%B^">>  %action%
