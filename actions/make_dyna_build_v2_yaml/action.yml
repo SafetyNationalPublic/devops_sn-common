@@ -29,7 +29,7 @@ runs:
         SET CloseBraces=}
         SET CloseBraces=%CloseBraces%}
 
-        echo name: Build - %SolutionName%  > %action%
+        echo name: %SolutionName%  > %action%
         echo inputs:>>  %action%
         echo   BRANCH:>>  %action%
         echo     description: 'Branch to build'>>  %action%
