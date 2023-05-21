@@ -1,0 +1,86 @@
+name: "Build Libraries"
+inputs:
+  BRANCH:
+    description: 'Branch to build'
+    default: 'master'
+    required: true
+    type: string
+  SOLUTIONNAME:
+    required: true
+    type: string
+  NUGET_API_KEY:
+    required: true
+  GITHUB_TOKEN:
+    required: true
+  GITHUB_BUILD_RELEASE:
+    required: true
+    
+runs:
+  using: "composite"
+  steps: 
+    - name: Make Dynamic Build Yaml Script
+      shell: cmd
+      run: |
+        SET SolutionName=${{ inputs.SOLUTIONNAME }}
+        mkdir %GITHUB_WORKSPACE%\.github\actions\dynamic_build
+        SET action=%GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
+        SET OpenBraces=${
+        SET OpenBraces=%OpenBraces%{
+        SET CloseBraces=}
+        SET CloseBraces=%CloseBraces%}
+
+        echo name: Build - %SolutionName%  > %action%
+        echo inputs:>>  %action%
+        echo   BRANCH:>>  %action%
+        echo     description: 'Branch to build'>>  %action%
+        echo     default: 'master'>>  %action%
+        echo     required: true>>  %action%
+        echo     type: string>>  %action%
+        echo   NUGET_API_KEY:>>  %action%
+        echo     required: true>>  %action%
+        echo   GITHUB_TOKEN:>>  %action%
+        echo     required: true>>  %action%
+        echo   GITHUB_BUILD_RELEASE:>>  %action%
+        echo     required: true>>  %action%
+        echo runs:>>  %action%
+        echo   using: "composite">>  %action%
+        echo   steps:>>  %action%
+
+        for /F "tokens=1,2 delims==#" %%A in (%GITHUB_WORKSPACE%\.projects_to_build) do (
+        echo     - name: "Build %%B">>  %action%
+                if NOT "%%B%%C" == "%%C%%B" (
+        echo ***************** echo Inserting %%B - %%C echo *****************
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_%%A@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
+        echo         PROJECTFILENAME: "%%B">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+                ) else (
+        echo ***************** echo Inserting %%B only echo *****************
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_%%A_if_exists@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECT: ^"%%B^">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+                )
+            )
+        )
+
+        echo Current Directory:
+        cd
+        echo Build File Located at:  %action%
+        type %GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
+
+    - name: "Run Dynamic Build"
+      uses: ./.github/actions/dynamic_build
+      with:
+        BRANCH: ${{ inputs.BRANCH }}
+        NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
+
