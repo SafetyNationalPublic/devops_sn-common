@@ -52,7 +52,7 @@ runs:
         echo   using: "composite">>  %action%
         echo   steps:>>  %action%
 
-        for /F "tokens=1,2,3 delims==#" %%A in (%GITHUB_WORKSPACE%\.projects_to_build) do (
+        for /F "tokens=1,2,3 delims==#" %%A in (%GITHUB_WORKSPACE%\%PROJECTLISTFILENAME%) do (
         
         echo     - name: "Build %%B">>  %action%
                 if NOT "%%B%%C" == "%%C%%B" (
