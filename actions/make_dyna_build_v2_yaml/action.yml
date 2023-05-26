@@ -8,6 +8,10 @@ inputs:
   SOLUTIONNAME:
     required: true
     type: string
+  PROJECTLISTFILENAME:
+    required: true
+    type: string
+    default: '.projects_to_build'
   NUGET_API_KEY:
     required: true
   GITHUB_TOKEN:
@@ -22,6 +26,7 @@ runs:
       shell: cmd
       run: |
         SET SolutionName=${{ inputs.SOLUTIONNAME }}
+        SET PROJECTLISTFILENAME=${{ inputs.PROJECTLISTFILENAME }}
         mkdir %GITHUB_WORKSPACE%\.github\actions\dynamic_build
         SET action=%GITHUB_WORKSPACE%\.github\actions\dynamic_build\action.yaml
         SET OpenBraces=${
@@ -30,6 +35,7 @@ runs:
         SET CloseBraces=%CloseBraces%}
 
         echo name: %SolutionName%  > %action%
+        echo project list: %PROJECTLISTFILENAME% > %action%
         echo inputs:>>  %action%
         echo   BRANCH:>>  %action%
         echo     description: 'Branch to build'>>  %action%
