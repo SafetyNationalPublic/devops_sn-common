@@ -20,7 +20,7 @@ inputs:
     required: true
   BUILD_PACKAGES:
     description: 'Branch to build'
-    default: 'false'
+    default: 'true'
     required: false
     type: string
     
