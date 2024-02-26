@@ -11,6 +11,11 @@ inputs:
     required: true
   GITHUB_BUILD_RELEASE:
     required: true
+  BUILD_PACKAGES:
+    description: 'Branch to build'
+    default: 'false'
+    required: false
+    type: string
   PROJECTPATH:
     required: true
     type: string
@@ -45,6 +50,7 @@ runs:
 
     - name: Set variables
       id: dotenv
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       uses: falti/dotenv-action@v1.0.2
       with:
         path: ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\obj\.env
@@ -54,12 +60,14 @@ runs:
       env:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       run: |
         echo "GITHUB_BUILD_RELEASE is %GITHUB_BUILD_RELEASE%"
         echo "BuildVersion is %BuildVersion%"
         echo "BuildVersion in action is ${{ steps.dotenv.outputs.DOTNET_BUILD_VERSION }}
 
     - name: Create ZIP
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       uses: thedoctor0/zip-release@main
       with:
         type: 'zip'
@@ -68,6 +76,7 @@ runs:
 
     - name: Create Release
       id: create_release
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
@@ -78,6 +87,7 @@ runs:
         prerelease: false
     - name: Upload Release Asset
       id: upload-release-asset 
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

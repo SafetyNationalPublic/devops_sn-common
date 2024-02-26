@@ -14,6 +14,11 @@ inputs:
   PROJECTPATH:
     required: true
     type: string
+  BUILD_PACKAGES:
+    description: 'Branch to build'
+    default: 'false'
+    required: false
+    type: string
   PROJECTFILENAME:
     required: true
     type: string
@@ -53,6 +58,7 @@ runs:
 
     - name: Pack Project
       shell: cmd
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       run: |
           echo ################################&echo  scanning directory ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\ for ${{ inputs.PROJECTFILENAME }}\*.*.nupkg &echo ################################
           for /f "delims=" %%c in ('dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.*.nupkg') do (
@@ -77,5 +83,6 @@ runs:
 
     - name: Close group
       shell: cmd
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
       run: echo "::endgroup::"
 

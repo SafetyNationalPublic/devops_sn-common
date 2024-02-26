@@ -11,6 +11,11 @@ inputs:
     required: true
   GITHUB_BUILD_RELEASE:
     required: true
+  BUILD_PACKAGES:
+    description: 'Branch to build'
+    default: 'false'
+    required: false
+    type: string
   PROJECT:
     required: true
     type: string
@@ -50,6 +55,7 @@ runs:
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
+        BUILD_PACKAGES: ${{ inputs.BUILD_PACKAGES }}
 
     - name: "Build ${{ inputs.PROJECT }} NetFx"
       if: steps.check_for_netfx.outputs.files_exists == 'true'
@@ -61,6 +67,7 @@ runs:
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
+        BUILD_PACKAGES: ${{ inputs.BUILD_PACKAGES }}
 
     - name: "Build ${{ inputs.PROJECT }} NetCore"
       if: steps.check_for_netcore.outputs.files_exists == 'true'
@@ -72,3 +79,4 @@ runs:
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
+        BUILD_PACKAGES: ${{ inputs.BUILD_PACKAGES }}
