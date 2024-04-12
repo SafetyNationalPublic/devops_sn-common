@@ -23,6 +23,11 @@ inputs:
     required: true
   GITHUB_BUILD_RELEASE:
     required: true
+  BUILD_PACKAGES:
+    description: 'Branch to build'
+    default: 'true'
+    required: false
+    type: string
     
 runs:
   using: "composite"
@@ -51,6 +56,10 @@ runs:
         echo     required: true>>  %action%
         echo   GITHUB_BUILD_RELEASE:>>  %action%
         echo     required: true>>  %action%
+        echo   BUILD_PACKAGES:>>  %action%
+        echo     default: 'false'>>  %action%
+        echo     required: false>>  %action%
+        echo     type: string>>  %action%
         echo runs:>>  %action%
         echo   using: "composite">>  %action%
         echo   steps:>>  %action%
@@ -69,6 +78,7 @@ runs:
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_library_if_exists@main>>  %action%
@@ -78,6 +88,7 @@ runs:
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
                 )
             )
         )
@@ -96,6 +107,7 @@ runs:
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
@@ -105,6 +117,7 @@ runs:
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
                 )
             )
         )
@@ -123,6 +136,7 @@ runs:
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
                 ) else (
         echo ***************** echo Inserting %%B only echo *****************
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
@@ -132,6 +146,7 @@ runs:
         echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
         echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
         echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
                 )
             )
         )
@@ -147,4 +162,4 @@ runs:
         NUGET_API_KEY: ${{ inputs.NUGET_API_KEY }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GITHUB_BUILD_RELEASE: ${{ inputs.GITHUB_BUILD_RELEASE }}
-
+        BUILD_PACKAGES: ${{ inputs.BUILD_PACKAGES }}
