@@ -59,7 +59,7 @@ runs:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       if: ${{ inputs.BUILD_PACKAGES == 'true' }}
-      run: dotnet pack --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-build
+      run: dotnet pack --configuration Debug ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj --no-build /p:BuildProjectReferences=false 
 
     - name: Pack Project
       shell: cmd
