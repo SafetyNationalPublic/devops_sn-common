@@ -81,6 +81,16 @@ runs:
           REM Clear file not found error if not package is found
           cmd /c "exit /b 0"
 
+    - name: Clear Nuget Http-Cache
+      shell: cmd
+      if: ${{ inputs.BUILD_PACKAGES == 'true' }}
+      run: |
+          echo ################################################################################################
+          echo " Clear Nuget Http-Cache                                                          "
+          echo ################################################################################################
+          dotnet nuget locals http-cache --clear
+          echo ################################################################################################
+
     - name: Close group
       shell: cmd
       if: ${{ inputs.BUILD_PACKAGES == 'true' }}
