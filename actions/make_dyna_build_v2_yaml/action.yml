@@ -96,7 +96,7 @@ runs:
                   ) else if "%%A" == "functions" (
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
                   ) else if "%%A" == "test" (
-        echo       uses: SafetyNationalPublic/devops_sn-common/actions/run_workflow_test_library_if_exists@main>>  %action%
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/run_workflow_test_if_exists@main>>  %action%
                   )
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
