@@ -101,6 +101,39 @@ runs:
             )
         )
 
+        for /F "tokens=1,2,3 delims==#" %%A in (%GITHUB_WORKSPACE%\%PROJECTLISTFILENAME%) do (
+        
+                if NOT "%%B%%C" == "%%C%%B" (
+        echo ***************** echo Inserting %%B - %%C echo *****************
+                  if "%%A" == "Test" (
+        echo     - name: "Test %%B">>  %action%
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/run_workflow_test@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECTPATH: ^"%%B\\%%C^">>  %action%
+        echo         PROJECTFILENAME: "%%B">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
+                  )
+                ) else (
+        echo ***************** echo Inserting %%B only echo *****************
+                  if "%%A" == "Test" (
+        echo     - name: "Test %%B">>  %action%
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/run_workflow_test_library_if_exists@main>>  %action%
+        echo       with:>>  %action%
+        echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
+        echo         PROJECT: ^"%%B^">>  %action%
+        echo         NUGET_API_KEY: %OpenBraces% inputs.NUGET_API_KEY %CloseBraces%>>  %action%
+        echo         GITHUB_TOKEN: %OpenBraces% inputs.GITHUB_TOKEN %CloseBraces%>>  %action%
+        echo         GITHUB_BUILD_RELEASE: %OpenBraces% inputs.GITHUB_BUILD_RELEASE %CloseBraces%>>  %action%
+        echo         BUILD_PACKAGES: %OpenBraces% inputs.BUILD_PACKAGES %CloseBraces%>>  %action%
+                  )
+                )
+            )
+        )
+
         echo Current Directory:
         cd
         echo Build File Located at:  %action%
