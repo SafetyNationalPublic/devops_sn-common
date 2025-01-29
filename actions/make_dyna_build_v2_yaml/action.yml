@@ -63,7 +63,11 @@ runs:
 
         for /F "tokens=1,2,3 delims==#" %%A in (%GITHUB_WORKSPACE%\%PROJECTLISTFILENAME%) do (
         
+                if "%%A" == "test" (
+        echo     - name: "Test %%B">>  %action%
+                ) else (
         echo     - name: "Build %%B">>  %action%
+                )
                 if NOT "%%B%%C" == "%%C%%B" (
         echo ***************** echo Inserting %%B - %%C echo *****************
                   if "%%A" == "library" (
@@ -72,6 +76,8 @@ runs:
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web@main>>  %action%
                   ) else if "%%A" == "functions" (
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions@main>>  %action%
+                  ) else if "%%A" == "test" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/run_workflow_test@main>>  %action%
                   )
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%
@@ -89,6 +95,8 @@ runs:
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_web_if_exists@main>>  %action%
                   ) else if "%%A" == "functions" (
         echo       uses: SafetyNationalPublic/devops_sn-common/actions/build_workflow_functions_if_exists@main>>  %action%
+                  ) else if "%%A" == "test" (
+        echo       uses: SafetyNationalPublic/devops_sn-common/actions/run_workflow_test_library_if_exists@main>>  %action%
                   )
         echo       with:>>  %action%
         echo         BRANCH: %OpenBraces% inputs.BRANCH %CloseBraces%>>  %action%

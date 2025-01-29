@@ -1,0 +1,67 @@
+name: "Test Libraries"
+inputs:
+  BRANCH:
+    description: 'Branch to test'
+    default: 'master'
+    required: true
+    type: string
+  NUGET_API_KEY:
+    required: true
+  GITHUB_TOKEN:
+    required: true
+  GITHUB_BUILD_RELEASE:
+    required: true
+  PROJECTPATH:
+    required: true
+    type: string
+  BUILD_PACKAGES:
+    description: 'Branch to test'
+    default: 'false'
+    required: false
+    type: string
+  PROJECTFILENAME:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Support longpaths
+      shell: cmd
+      run: git config --system core.longpaths true
+
+    - name: Title
+      shell: cmd
+      run: echo "### Testing ${{ inputs.PROJECTFILENAME }}" >> $GITHUB_STEP_SUMMARY
+
+    - name: Open Group
+      shell: cmd
+      run: echo "::group::{ 'Testing ${{ inputs.PROJECTFILENAME }}' }"
+
+    - name: Scan for file
+      env:
+        BRANCH: ${{ github.event.inputs.BRANCH }}
+        PROJECTPATH: ${{ inputs.PROJECTPATH }}
+        PROJECTFILENAME: ${{ inputs.PROJECTFILENAME }}
+      shell: cmd
+      run: dir /s /b ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}*.csproj
+
+    - name: Test Project
+      env:
+        GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
+      shell: cmd
+      run: dotnet test --configuration Debug -f net8.0 --no-restore --logger "trx;LogFilename=${{ inputs.PROJECTFILENAME }}.trx" ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Tests
+        path: ${{ inputs.PROJECTFILENAME }}.trx
+        use-actions-summary: 'true'
+        badge-title: 'tests'
+        list-suites: 'all'
+        list-tests: 'all'
+        fail-on-error: 'false'
+        fail-on-empty: 'true'
+        reporter: dotnet-trx
