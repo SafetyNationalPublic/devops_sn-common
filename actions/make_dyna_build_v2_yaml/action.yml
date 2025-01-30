@@ -131,12 +131,3 @@ runs:
       with:
         name: test-results
         path: '${{ github.workspace }}\TestResults\*.trx'
-
-    - name: Test Report
-      if: always()
-      uses: dorny/test-reporter@v1
-      with:
-        name: Tests
-        artifact: test-results
-        path: '*.trx'
-        reporter: dotnet-trx
