@@ -51,10 +51,3 @@ runs:
         GITHUB_BUILD_RELEASE: ${{ github.event.inputs.GITHUB_BUILD_RELEASE }}
       shell: cmd
       run: dotnet test --configuration Debug -f net8.0 --no-restore --logger "trx;LogFilename=${{ github.workspace }}\TestResults\${{ inputs.PROJECTFILENAME }}.trx" ${{ github.workspace }}\${{ inputs.PROJECTPATH }}\${{ inputs.PROJECTFILENAME }}.csproj
-
-    - name: Upload Unit Test Results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ inputs.PROJECTFILENAME }}-test-results
-        path: '${{ github.workspace }}\TestResults\${{ inputs.PROJECTFILENAME }}.trx'
