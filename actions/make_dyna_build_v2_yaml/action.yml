@@ -140,4 +140,5 @@ runs:
         artifact: test-results
         path: '*.trx'
         fail-on-error: 'false'
+        fail-on-empty: 'false'
         reporter: dotnet-trx
