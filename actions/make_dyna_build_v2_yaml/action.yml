@@ -27,6 +27,11 @@ inputs:
 runs:
   using: "composite"
   steps: 
+    - name: Configure NuGet
+      shell: cmd
+      run: |
+        dotnet nuget update source github --username ${{ github.actor }} --password ${{ inputs.NUGET_API_KEY }}
+
     - name: Make Dynamic Build Yaml Script
       shell: cmd
       run: |
